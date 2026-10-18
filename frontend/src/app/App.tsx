@@ -273,7 +273,7 @@ function Dashboard({
               <h2>System readiness</h2>
               <p>Runtime checks from this device</p>
             </div>
-            <span className="check-icon" aria-hidden="true">✓</span>
+            <ReadinessIndicator system={system} />
           </div>
           {system.status === "loading" ? (
             <p className="empty-copy">Checking system…</p>
@@ -305,6 +305,29 @@ function Dashboard({
         </p>
       </div>
     </section>
+  );
+}
+
+function ReadinessIndicator({ system }: { system: LoadState<SystemInfo> }) {
+  if (system.status === "loading") return null;
+  if (system.status === "error") {
+    return (
+      <span className="check-icon error" role="img" aria-label="System checks unavailable">
+        !
+      </span>
+    );
+  }
+  if (!system.value.rsync_available) {
+    return (
+      <span className="check-icon warning" role="img" aria-label="Needs attention: rsync is not installed">
+        !
+      </span>
+    );
+  }
+  return (
+    <span className="check-icon" role="img" aria-label="System checks passed">
+      ✓
+    </span>
   );
 }
 

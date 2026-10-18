@@ -196,4 +196,18 @@ describe("BackInTime app", () => {
     const headerSelection = screen.getByLabelText("Current profile selection");
     expect(within(headerSelection).getByText("No profile selected")).toBeInTheDocument();
   });
+
+  it("does not show a passing readiness check when rsync is missing (#26)", async () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      await screen.findByRole("img", { name: "Needs attention: rsync is not installed" }),
+    ).toHaveTextContent("!");
+    expect(screen.queryByRole("img", { name: "System checks passed" })).not.toBeInTheDocument();
+    expect(screen.getByText("Not installed")).toBeInTheDocument();
+  });
 });

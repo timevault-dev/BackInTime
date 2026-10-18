@@ -149,13 +149,13 @@ a {
 
 .nav-count {
   margin-left: auto;
-  color: #8993a1;
+  color: #626d7b;
   font-size: 10px;
 }
 
 .soon-label {
   margin-left: auto;
-  color: #a1a9b5;
+  color: #697484;
   font-size: 9px;
 }
 
@@ -171,7 +171,7 @@ a {
   padding: 14px 5px 0;
   border-top: 1px solid #f0f1f3;
   font-size: 10px;
-  color: #707a89;
+  color: #6b7583;
 }
 
 .status-dot,
@@ -182,19 +182,19 @@ a {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #c2c8d0;
+  background: #8691a1;
 }
 
 .status-dot.online,
 .live-indicator,
 .configured-badge span,
 .positive-text .tiny-status {
-  background: #35b980;
+  background: #2fa371;
 }
 
 .service-state {
   margin-left: auto;
-  color: #949dab;
+  color: #697484;
 }
 
 .main-area {
@@ -314,7 +314,7 @@ h1 {
   border: 1px solid #f1dba8;
   border-radius: 13px;
   background: #fff9e9;
-  color: #bb8b2c;
+  color: #b3852a;
   font-size: 17px;
 }
 
@@ -341,7 +341,7 @@ h1 {
 
 .service-copy p {
   margin: 0;
-  color: #8791a0;
+  color: #677282;
   font-size: 11px;
 }
 
@@ -358,7 +358,7 @@ h1 {
 }
 
 .muted {
-  color: #a0a8b3 !important;
+  color: #697484 !important;
 }
 
 .stats-grid {
@@ -718,7 +718,7 @@ h1 {
 .copy-button.copied {
   background: #eaf8f1;
   border-color: #a3dec3;
-  color: #2b9b6d;
+  color: #227b57;
 }
 
 .copy-button.copy-error {
@@ -737,7 +737,7 @@ h1 {
   gap: 5px;
   padding: 5px 7px;
   border-radius: 20px;
-  color: #428a6c;
+  color: #3b7a60;
   background: #eff9f4;
   font-size: 8px;
   white-space: nowrap;
@@ -844,6 +844,16 @@ h1 {
   font-size: 12px;
 }
 
+.check-icon.warning {
+  color: #936e29;
+  background: #fdf5e4;
+}
+
+.check-icon.error {
+  color: #b23a30;
+  background: #fdf0ef;
+}
+
 .readiness-list {
   margin: 0;
   padding: 2px 18px 14px;
@@ -875,19 +885,19 @@ h1 {
 .readiness-list dd .tiny-status {
   width: 6px;
   height: 6px;
-  background: #d7a446;
+  background: #ba8728;
 }
 
 .positive-text {
-  color: #3c956f !important;
+  color: #348160 !important;
 }
 
 .positive-text .tiny-status {
-  background: #35b980 !important;
+  background: #2fa371 !important;
 }
 
 .warning-text {
-  color: #a1782d !important;
+  color: #936e29 !important;
 }
 
 .notice {
@@ -979,7 +989,7 @@ h1 {
 
 .error-banner p {
   margin: 3px 0 0;
-  color: #a76d67;
+  color: #9c615b;
   font-size: 10px;
   overflow-wrap: anywhere;
 }
