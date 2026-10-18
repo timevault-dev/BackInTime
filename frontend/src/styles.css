@@ -140,6 +140,17 @@ h1 { margin-bottom: 5px; color: #202b3b; font-size: 25px; letter-spacing: -.85px
 .error-banner strong { font-size: 10px; }
 .error-banner p { margin: 3px 0 0; color: #a76d67; font-size: 10px; overflow-wrap: anywhere; }
 .page-heading + .error-banner { margin-top: 0; }
+.error-copy { min-width: 0; flex: 1; }
+.error-banner .error-time { color: #9a625c; }
+.retry-button, .refresh-button { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; }
+.retry-button { padding: 5px 10px; border: 1px solid #d9a39d; color: #8f3b33; background: #fff; }
+.refresh-button { padding: 7px 11px; border: 1px solid #d5dbe6; color: #3d5fc4; background: #fff; }
+.retry-button:hover:not(:disabled), .refresh-button:hover:not(:disabled) { background: #f4f6fb; }
+.retry-button:disabled, .refresh-button:disabled { cursor: progress; opacity: .7; }
+.retry-button:focus-visible, .refresh-button:focus-visible { outline: 2px solid #3d5fc4; outline-offset: 2px; }
+.refresh-icon { display: inline-block; font-size: 12px; line-height: 1; }
+.refresh-icon.spinning { animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 1050px) {
   .sidebar { width: 215px; }
@@ -160,7 +171,7 @@ h1 { margin-bottom: 5px; color: #202b3b; font-size: 25px; letter-spacing: -.85px
   .main-area { min-height: calc(100vh - 117px); margin-left: 0; }
   .topbar { height: 48px; padding: 0 17px; }
   .page-content { padding: 27px 17px 35px; }
-  .page-heading { margin-bottom: 18px; }
+  .page-heading { flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
   h1 { font-size: 23px; }
   .service-banner { align-items: flex-start; padding: 15px; gap: 11px; }
   .service-symbol { width: 36px; height: 36px; flex-basis: 36px; }
