@@ -15,3 +15,7 @@ class ValidationError(BackInTimeError):
 
 class RepositoryError(BackInTimeError):
     """Raised when a snapshot repository cannot be safely inspected."""
+
+
+class SnapshotNotFoundError(BackInTimeError):
+    """Raised when a requested snapshot is not present and healthy."""

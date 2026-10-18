@@ -1,5 +1,7 @@
 """Validated API request and response models."""
 
+from typing import Literal
+
 from pydantic import BaseModel, ConfigDict
 
 
@@ -34,6 +36,24 @@ class ProfileListResponse(BaseModel):
     """Configured profiles."""
 
     profiles: list[ProfileResponse]
+
+
+class SnapshotEntryResponse(BaseModel):
+    """Safe metadata for one browsable snapshot entry."""
+
+    name: str
+    kind: Literal["directory", "file", "symlink", "other"]
+    size_bytes: int
+    modified_time_ns: int
+
+
+class SnapshotDirectoryResponse(BaseModel):
+    """One bounded page of entries from a snapshot directory."""
+
+    snapshot_id: str
+    path: str
+    entries: list[SnapshotEntryResponse]
+    next_cursor: str | None
 
 
 class ErrorDetail(BaseModel):
