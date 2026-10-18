@@ -7,7 +7,11 @@ from pathlib import Path
 
 from backintime import __version__
 from backintime.core.config import ConfigStore
-from backintime.core.exceptions import BackInTimeError
+from backintime.core.exceptions import BackInTimeError, ValidationError
+from backintime.core.repository import Repository
+from backintime.core.retention import RetentionPolicy, plan_retention
+
+_RETENTION_RULES = ("keep_last", "keep_daily", "keep_weekly", "keep_monthly", "keep_yearly")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -25,6 +29,18 @@ def build_parser() -> argparse.ArgumentParser:
     )
     subparsers = parser.add_subparsers(dest="command")
     subparsers.add_parser("check-config", help="load and validate the configuration")
+    preview = subparsers.add_parser(
+        "retention-preview",
+        help="show which snapshots a retention policy would remove (dry run, deletes nothing)",
+    )
+    preview.add_argument("--profile", required=True, help="profile ID to preview")
+    for rule in _RETENTION_RULES:
+        preview.add_argument(
+            f"--{rule.replace('_', '-')}",
+            dest=rule,
+            type=int,
+            help=f"override the profile's {rule} rule",
+        )
     return parser
 
 
@@ -43,7 +59,54 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"Configuration is valid ({count} profile{'s' if count != 1 else ''}).")
         return 0
 
+    if args.command == "retention-preview":
+        return _retention_preview(args)
+
     parser.print_help()
+    return 0
+
+
+def _retention_preview(args: argparse.Namespace) -> int:
+    """Print a dry-run retention plan for one profile."""
+    try:
+        configuration = ConfigStore(args.config).load()
+        profile = next(
+            (item for item in configuration.profiles if item.profile_id == args.profile), None
+        )
+        if profile is None:
+            print(f"Profile not found: {args.profile}", file=sys.stderr)
+            return 1
+        rules = profile.extensions.get("retention", {})
+        overrides = {
+            rule: getattr(args, rule)
+            for rule in _RETENTION_RULES
+            if getattr(args, rule) is not None
+        }
+        if not rules and not overrides:
+            print(
+                f"Profile '{profile.profile_id}' has no retention rules. Add a 'retention' "
+                "object to the profile or pass --keep-* options.",
+                file=sys.stderr,
+            )
+            return 1
+        if not isinstance(rules, dict):
+            raise ValidationError(
+                f"Profile '{profile.profile_id}' 'retention' must be a JSON object."
+            )
+        policy = RetentionPolicy.from_mapping({**rules, **overrides})
+        records = Repository(profile.target).list_snapshots(include_incomplete=True)
+    except BackInTimeError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
+
+    plan = plan_retention(records, policy)
+    print(f"Retention preview for profile '{profile.profile_id}' (dry run, nothing is deleted)")
+    for entry in plan.entries:
+        print(f"  {entry.action.value:<6} {entry.snapshot_id}  ({'; '.join(entry.reasons)})")
+    print(
+        f"{len(plan.keep)} kept, {len(plan.remove)} would be removed, "
+        f"{len(plan.skip)} skipped as incomplete or invalid."
+    )
     return 0
 
 
